@@ -1,0 +1,18 @@
+
+
+Assume for now that we are transmitting an AM signal at 12.000mhz with a 1khz tone from the microphone.  The two diode modulator get's a 12.000mhz carrier from the BFO and mixes that with the 0.001mhz audio from the microphone.   The modulator gives us a signal consisting of the carrier, the carrier plus the audio or 12.001mhz and the carrier minus the audio or 11.999mhz.  If we send that straight out to the IRF510, that's AM phone on 12mhz.
+
+For LSB, all we want is the 11.999mhz signal.  We  can get that by having  very sharp bandpass filter (the crystal filter) that allows through the 11.999mhz modulator product but not the 12.000mhz or 12.001mhz components.  Sending that on to the IRF510 would give an LSB signal at 12.000 MHz.  (The number you read on the dial is the frequency of the suppressed carrier.)
+
+For USB, all we want is the 12.001mhz signal.  We  can get that by having  very sharp bandpass filter that allows through the 12.001mhz modulator product but not the 12.000mhz or 11.999mhz components.  Sending that on to the IRF510 would give a USB signal at 12.000 MHz.
+
+It's really hard to move the crystal filter.  Easier to build the crystal filter for only 12.000mhz, and place the BFO at either 11.999mhz (for USB) or 12.001mhz (for LSB).
+
+If we speak into the microphone, most of us give more than just a 1khz tone, there's a range of audio frequencies of interest for intelligible speech from around 500hz to 3000hz.    So that crystal filter must allow a band of frequencies about 2500hz wide through, not just a single frequency. The Bitx40 has a balanced modulator, so the carrier is mostly suppressed.  It's good enough if the crystal filter does a good enough job of knocking out the far sideband, which starts at 500+500=1000hz away from the low audio frequencies that we are trying to transmit.
+
+We want to transmit at 7mhz, not 12mhz.  The diode ring mixer combines the above 12mhz sideband signal with the VFO.  If the VFO is at 5mhz, then the 7mhz bandpass filter (the three torroids L1,L2,L3) will allow through the 7mhz difference signal from 12mhz-5mhz.  If the VFO is at 19mhz, then the bandpass filter will allow through the 7mhz difference of 19mhz-12mhz.  Note that 19-12.001 = 6.999mhz, so in the 19mhz case what was 12mhz USB has become 7mhz LSB.
+
+The sketch has been written.  Several here are successfully using a 19mhz VFO to transmit 40m USB.  Ask them.   Only physical change is to remove C91 and C92, the Raduino doesn't need them for 5mhz or 19mhz.  Pete is successfully using the alternate method of moving the BFO from the Si5351.
+
+
+
